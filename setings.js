@@ -1,6 +1,6 @@
 export const SETINGS = {
     serverSeting: {
-        port: 3000,
+        port: 3002,
         host: 'localhost',
         routes: {
             state: {

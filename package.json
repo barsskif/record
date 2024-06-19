@@ -9,7 +9,8 @@
   "dependencies": {
     "@hapi/hapi": "^21.3.10",
     "puppeteer": "^22.11.0",
-    "puppeteer-screen-recorder": "^3.0.3"
+    "puppeteer-screen-recorder": "^3.0.3",
+    "socket.io-client": "^4.7.5"
   },
   "scripts": {
     "dev": "node index.js"

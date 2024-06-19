@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import { SETINGS } from '../../setings.js';
 
 
+
 // Объекты для хранения экземпляров браузера и страниц
 let browsers = {};
 let pages = {};
@@ -57,23 +58,38 @@ export const mainRoute = (server) => {
 
             console.log(`The title of this web page is "${title}".`);
 
+            await page.addScriptTag({ url: 'https://cdn.socket.io/4.0.0/socket.io.min.js' });
+
             page.evaluate(async () => {
                 document.title = 'Video chat'
-                const stream = await navigator.mediaDevices.getDisplayMedia({
-                    mandatory: {
-                        chromeMediaSource: 'tab',
-                    }
-                })
-                const recorder = new window.MediaRecorder(stream, { mimeType: 'video/webm' })
-                recorder.start(10)
-                const chunks = []
-                recorder.addEventListener('dataavailable', event => {
-                    if (event.data && event.data.size) {
-                        chunks.push(event.data)
-                    }
-                })
 
-                console.log(chunks)
+
+                const ws = io('http://localhost:3000/mediasoup', {
+                    transports: ['websocket'],
+                });
+                // const ws = io('wss://video.verbatica.ai/mediasoup');
+
+
+                ws.on('connection-success', async ({ socketId }) => {
+                    console.log(socketId);
+
+                    const stream = await navigator.mediaDevices.getDisplayMedia({
+                        video: true, // Захват видео
+                    });
+
+                    const mediaRecorder = new MediaRecorder(stream); // 'stream' получен через navigator.mediaDevices.getUserMedia
+                    mediaRecorder.ondataavailable = function (event) {
+                        if (event.data.size > 0) {
+                            ws.emit('record', event.data);
+                        }
+                    };
+                    mediaRecorder.start(1000)
+
+
+
+                    // getLocalStream();
+                });
+
             })
 
 

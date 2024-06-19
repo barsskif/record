@@ -1,0 +1,17 @@
+{
+  "name": "record-video",
+  "version": "1.0.0",
+  "description": "recordingVideoMeet",
+  "main": "index.js",
+  "type": "module",
+  "author": "Andrey Perepelukov",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.10",
+    "puppeteer": "^22.11.0",
+    "puppeteer-screen-recorder": "^3.0.3"
+  },
+  "scripts": {
+    "dev": "node index.js"
+  }
+}

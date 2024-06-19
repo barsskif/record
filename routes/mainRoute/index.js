@@ -11,14 +11,17 @@ const launchPuppeteer = async (id) => {
     const browser = await puppeteer.launch({
         headless: false,
         args: [
-            `--window-size=1920,1080`,
-            '--enable-experimental-web-platform-features',
-            '--disable-infobars',
+            '--no-sandbox',
+            '--allow-insecure-localhost',
             '--enable-usermedia-screen-capturing',
-            '--allow-http-screen-capture',
-            '--auto-select-desktop-capture-source=webclip',
-            '--ignore-certificate-errors',
-            '--unsafely-treat-insecure-origin-as-secure=' + SETINGS.baseUrl
+            '--use-fake-ui-for-media-stream', // In headless: false it will capture display rather than tab and in headless: true doesn't work
+            '--auto-select-desktop-capture-source=[RECORD]', //[RECORD] is the title of my localhost page trying to screen capture
+            '--remote-debugging-port=9222',
+            '--window-size=1440,900',
+        ],
+        ignoreDefaultArgs: [
+            '--mute-audio',
+            '--disable-media-session-api',
         ]
     });
     const page = await browser.newPage();
